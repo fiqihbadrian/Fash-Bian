@@ -543,7 +543,7 @@ function fb_runLayerAnim(id, mode, L, dur, start, amp){
   // Mode Masuk — pakai preset reveal yang sudah ada
   if(mode === 'in'){
     var inMap = { bounce:'bounce-in', pop:'pop-in', fade:'fade-in', slide:'slide-up', swing:'bounce-rotate' };
-    fb_runAnimationCode(inMap[id] || 'pop-in', L, dur, { start: start });
+    fb_runAnimationCode(inMap[id] || 'pop-in', L, dur, { start: start, amp: amp });
     return;
   }
 
@@ -708,6 +708,7 @@ function fb_parseColor(color){
 function fb_runAnimationCode(id, L, dur, opts){
   opts = opts || {};
   var ip = (opts && opts.start) ? opts.start : L.inPoint;
+  var fac = (typeof opts.amp === 'number' && opts.amp > 0) ? opts.amp/50 : 1; // Amplitude 0..100 → 0..2
   var grp = L.property("ADBE Transform Group");
   if(!grp) throw "Transform group not found";
   var hw = L.containingComp.width;
@@ -794,7 +795,7 @@ function fb_runAnimationCode(id, L, dur, opts){
       var op = fb_prop(grp, "ADBE Opacity");
       var pos = fb_prop(grp, "ADBE Position");
       var sv = pos.value;
-      pos.setValueAtTime(ip, [sv[0], sv[1]+hh*0.5+200]);
+      pos.setValueAtTime(ip, [sv[0], sv[1]+(hh*0.5+200)*fac]);
       pos.setValueAtTime(ip + dur*0.8, sv);
       op.setValueAtTime(ip, 0);
       op.setValueAtTime(ip + dur*0.05, 0);
@@ -808,7 +809,7 @@ function fb_runAnimationCode(id, L, dur, opts){
       var op = fb_prop(grp, "ADBE Opacity");
       var pos = fb_prop(grp, "ADBE Position");
       var sv = pos.value;
-      pos.setValueAtTime(ip, [sv[0], sv[1]-hh*0.5-200]);
+      pos.setValueAtTime(ip, [sv[0], sv[1]-(hh*0.5+200)*fac]);
       pos.setValueAtTime(ip + dur*0.8, sv);
       op.setValueAtTime(ip, 0);
       op.setValueAtTime(ip + dur*0.05, 0);
@@ -905,9 +906,9 @@ function fb_runAnimationCode(id, L, dur, opts){
       fx.name = "Typewriter";
       var sl = fx.property("Slider");
       sl.setValueAtTime(ip, 0);
-      sl.setValueAtTime(ip + dur, ot.length + 1);
+      sl.setValueAtTime(ip + dur, ot.length);
       for(var kk=1;kk<=sl.numKeys;kk++) sl.setInterpolationTypeAtKey(kk,KeyframeInterpolationType.LINEAR,KeyframeInterpolationType.LINEAR);
-      L.property("Source Text").expression = 'var t=effect("Typewriter")("Slider").value;var s="'+esc+'";if(t>s.length)t=s.length;s.substr(0,Math.floor(t));';
+      L.property("Source Text").expression = 'var t=effect("Typewriter")("Slider").value;if(t<1)t=1;if(t>' + ot.length + ')t=' + ot.length + ';var s="'+esc+'";s.substr(0,Math.floor(t));';
       break;
     }
     // ─── Word by Word ───
