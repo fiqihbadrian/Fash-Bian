@@ -336,3 +336,4 @@
   text-align:center;
 }
 .fb-toast.show{ opacity:1; transform:translate(-50%,0); }
+.fb-toast-err{ background:rgba(180,40,50,.95); border-color:rgba(255,120,120,.4); }

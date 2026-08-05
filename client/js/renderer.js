@@ -90,6 +90,7 @@ var Renderer = (function(){
 
   function run(type, id, params){
     params = params || {};
+    fbToast('🔄 Menjalankan: ' + id + ' (type: ' + type + ')'); // umpan balik instan, jangan pernah diam
     var extPath = decodeURIComponent(window.location.href)
       .replace(/^file:\/\//,'')
       .replace(/\/client\/index\.html$/,'');
@@ -111,7 +112,11 @@ var Renderer = (function(){
 
     var evalFn = getEval();
     if(!evalFn){
-      console.log('FastBian: CSInterface tidak tersedia. Simulasi: ' + id);
+      var why = 'Tidak ada jembatan ke After Effects.\n' +
+        'CEP: ' + (typeof CSInterface) + ', __adobe_cep__: ' + (typeof window.__adobe_cep__) + ', cep: ' + (typeof window.cep) +
+        '\n\nCek: restart AE, atau instal ulang panel lewat sync.sh.';
+      fbToast('🚫 ' + id + ' — ' + why, true);
+      console.log('FastBian: no bridge. ' + why);
       return;
     }
     try {
@@ -162,10 +167,10 @@ var Renderer = (function(){
     try { evalFn(script, function(){}); } catch(e){ alert('FastBian error: ' + e.message); }
   }
 
-  // Toast feedback kecil di panel
-  function fbToast(msg){
+  // Toast feedback kecil di panel (isErr → gaya merah)
+  function fbToast(msg, isErr){
     var t = document.createElement('div');
-    t.className = 'fb-toast';
+    t.className = 'fb-toast' + (isErr ? ' fb-toast-err' : '');
     t.textContent = msg;
     document.body.appendChild(t);
     setTimeout(function(){ t.classList.add('show'); }, 10);
