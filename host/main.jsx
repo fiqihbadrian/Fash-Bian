@@ -42,6 +42,7 @@ function FastBian_RunAnimation(id, extPath, paramsJson){
     var color = p.color || '#ffffff';
     var mode = p.mode || 'in';
     var loop = p.loop === true || p.loop === 1 || p.loop === '1';
+    var amp = parseFloat(p.amp); if(isNaN(amp)) amp = 50; // Amplitude 0..100
     var freq = parseFloat(p.freq) || 1;
     var style = p.style || 'default';
 
@@ -62,7 +63,7 @@ function FastBian_RunAnimation(id, extPath, paramsJson){
     if(id === 'typewriter'){
       fb_runAnimationCode('typewriter', L, dur, { start: start });
     } else {
-      fb_runLayerAnim(id, mode, L, dur, start);
+      fb_runLayerAnim(id, mode, L, dur, start, amp);
       if(loop) fb_applyLoopToKeys(L);
     }
     return 'OK: ' + fb_label(id) + ' applied (' + dur + 's)';
@@ -495,6 +496,7 @@ function FastBian_RunLayerAnimation(id, extPath, paramsJson){
   var dur = Math.max(0.2, parseFloat(p.dur) || 2);
   var mode = p.mode || 'in';
   var loop = p.loop === true || p.loop === 1 || p.loop === '1';
+  var amp = parseFloat(p.amp); if(isNaN(amp)) amp = 50; // Amplitude 0..100
   app.beginUndoGroup('FastBian: ' + fb_label(id) + ' ' + mode);
   try {
     if(!app.project) return 'ERR: No project opened.';
@@ -503,7 +505,7 @@ function FastBian_RunLayerAnimation(id, extPath, paramsJson){
     var layers = comp.selectedLayers;
     if(layers.length === 0) return 'ERR: Select a layer first.';
     for(var i=0;i<layers.length;i++){
-      fb_runLayerAnim(id, mode, layers[i], dur, comp.time);
+      fb_runLayerAnim(id, mode, layers[i], dur, comp.time, amp);
       if(loop) fb_applyLoopToKeys(layers[i]);
     }
     return 'OK: ' + fb_label(id) + ' (' + mode + ', ' + dur + 's' + (loop ? ', loop' : '') + ')';
@@ -515,18 +517,19 @@ function FastBian_RunLayerAnimation(id, extPath, paramsJson){
 }
 
 // ─── Satu gaya animasi dengan 3 mode: in / out / center ───
-function fb_runLayerAnim(id, mode, L, dur, start){
+function fb_runLayerAnim(id, mode, L, dur, start, amp){
   var grp = L.property("ADBE Transform Group");
   if(!grp) throw "Transform group not found";
   var hh = L.containingComp.height;
   var ip = start;
+  var F = (typeof amp === 'number' && amp > 0) ? amp/50 : 1; // 0..100 → 0..2; 50 = standar
 
   // Shake — digarap manual (envelope sinus = mulai/berhenti halus, tanpa sentakan)
   if(id === 'shake'){
     var pos = fb_prop(grp, "ADBE Position");
     var op  = fb_prop(grp, "ADBE Opacity");
     var sv = pos.value;
-    if(pos) fb_shakeKeys(pos, sv, ip, dur, (mode === 'out') ? 16 : 12);
+    if(pos) fb_shakeKeys(pos, sv, ip, dur, ((mode === 'out') ? 16 : 12) * F);
     if(op){
       if(mode === 'in'){ op.setValueAtTime(ip, 0); op.setValueAtTime(ip + dur*0.25, 100); fb_easeBiased(op, 60, 10); }
       else if(mode === 'out'){ op.setValueAtTime(ip, 100); op.setValueAtTime(ip + dur*0.7, 100); op.setValueAtTime(ip + dur, 0); fb_easeBiased(op, 60, 10); }
@@ -555,17 +558,17 @@ function fb_runLayerAnim(id, mode, L, dur, start){
       case 'bounce':{
         if(pos) pos.setValueAtTime(ip, sv);
         if(op){ op.setValueAtTime(ip, 100); op.setValueAtTime(ip + dur*0.3, 100); op.setValueAtTime(ip + dur, 0); fb_easeBiased(op, 60, 10); }
-        if(pos){ pos.setValueAtTime(ip + dur*0.3, sv); pos.setValueAtTime(ip + dur, [sv[0], sv[1] - hh*0.5]); fb_easeBiased(pos, 10, 75); }
+        if(pos){ pos.setValueAtTime(ip + dur*0.3, sv); pos.setValueAtTime(ip + dur, [sv[0], sv[1] - hh*0.5*F]); fb_easeBiased(pos, 10, 75); }
         break;
       }
       case 'slide':{
         if(op){ op.setValueAtTime(ip, 100); op.setValueAtTime(ip + dur*0.6, 100); op.setValueAtTime(ip + dur, 0); fb_easeBiased(op, 60, 10); }
-        if(pos){ pos.setValueAtTime(ip, sv); pos.setValueAtTime(ip + dur*0.7, sv); pos.setValueAtTime(ip + dur, [sv[0], sv[1] + hh*0.6]); fb_easeBiased(pos, 10, 75); }
+        if(pos){ pos.setValueAtTime(ip, sv); pos.setValueAtTime(ip + dur*0.7, sv); pos.setValueAtTime(ip + dur, [sv[0], sv[1] + hh*0.6*F]); fb_easeBiased(pos, 10, 75); }
         break;
       }
       case 'swing':{
         if(op){ op.setValueAtTime(ip, 100); op.setValueAtTime(ip + dur*0.5, 100); op.setValueAtTime(ip + dur, 0); fb_easeBiased(op, 60, 10); }
-        if(rot){ rot.setValueAtTime(ip, 0); rot.setValueAtTime(ip + dur*0.15, 8); rot.setValueAtTime(ip + dur*0.35, -6); rot.setValueAtTime(ip + dur*0.6, 4); rot.setValueAtTime(ip + dur, -14); fb_easeBiased(rot, 10, 75); }
+        if(rot){ rot.setValueAtTime(ip, 0); rot.setValueAtTime(ip + dur*0.15, 8*F); rot.setValueAtTime(ip + dur*0.35, -6*F); rot.setValueAtTime(ip + dur*0.6, 4*F); rot.setValueAtTime(ip + dur, -14*F); fb_easeBiased(rot, 10, 75); }
         break;
       }
     }
@@ -576,9 +579,9 @@ function fb_runLayerAnim(id, mode, L, dur, start){
   switch(id){
     case 'bounce':{
       if(pos){ pos.setValueAtTime(ip, sv);
-        pos.setValueAtTime(ip + dur*0.25, [sv[0], sv[1] - 60]);
+        pos.setValueAtTime(ip + dur*0.25, [sv[0], sv[1] - 60*F]);
         pos.setValueAtTime(ip + dur*0.5, sv);
-        pos.setValueAtTime(ip + dur*0.75, [sv[0], sv[1] - 30]);
+        pos.setValueAtTime(ip + dur*0.75, [sv[0], sv[1] - 30*F]);
         pos.setValueAtTime(ip + dur, sv);
         fb_easeBiased(pos, 8, 70);
       }
@@ -586,9 +589,9 @@ function fb_runLayerAnim(id, mode, L, dur, start){
     }
     case 'pop':{
       if(sc){ sc.setValueAtTime(ip, [100,100]);
-        sc.setValueAtTime(ip + dur*0.2, [118,118]);
-        sc.setValueAtTime(ip + dur*0.45, [92,92]);
-        sc.setValueAtTime(ip + dur*0.7, [108,108]);
+        sc.setValueAtTime(ip + dur*0.2, [100+18*F,100+18*F]);
+        sc.setValueAtTime(ip + dur*0.45, [100-8*F,100-8*F]);
+        sc.setValueAtTime(ip + dur*0.7, [100+8*F,100+8*F]);
         sc.setValueAtTime(ip + dur, [100,100]);
         fb_easeBiased(sc, 8, 70);
       }
@@ -596,9 +599,9 @@ function fb_runLayerAnim(id, mode, L, dur, start){
     }
     case 'fade':{
       if(op){ op.setValueAtTime(ip, 100);
-        op.setValueAtTime(ip + dur*0.25, 40);
+        op.setValueAtTime(ip + dur*0.25, 100-60*F);
         op.setValueAtTime(ip + dur*0.5, 100);
-        op.setValueAtTime(ip + dur*0.75, 40);
+        op.setValueAtTime(ip + dur*0.75, 100-60*F);
         op.setValueAtTime(ip + dur, 100);
         fb_easeBiased(op, 30, 60);
       }
@@ -606,7 +609,7 @@ function fb_runLayerAnim(id, mode, L, dur, start){
     }
     case 'slide':{
       if(pos){ pos.setValueAtTime(ip, sv);
-        pos.setValueAtTime(ip + dur*0.5, [sv[0], sv[1] - 50]);
+        pos.setValueAtTime(ip + dur*0.5, [sv[0], sv[1] - 50*F]);
         pos.setValueAtTime(ip + dur, sv);
         fb_easeBiased(pos, 10, 70);
       }
@@ -614,9 +617,9 @@ function fb_runLayerAnim(id, mode, L, dur, start){
     }
     case 'swing':{
       if(rot){ rot.setValueAtTime(ip, 0);
-        rot.setValueAtTime(ip + dur*0.25, 8);
+        rot.setValueAtTime(ip + dur*0.25, 8*F);
         rot.setValueAtTime(ip + dur*0.5, 0);
-        rot.setValueAtTime(ip + dur*0.75, -8);
+        rot.setValueAtTime(ip + dur*0.75, -8*F);
         rot.setValueAtTime(ip + dur, 0);
         fb_easeBiased(rot, 10, 70);
       }

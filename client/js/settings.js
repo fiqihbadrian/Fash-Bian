@@ -71,8 +71,9 @@ var SettingsPanel = (function(){
       var color = (panel.querySelector('#sp-color') || {}).value || '#ffffff';
       var mode = (panel.querySelector('#sp-mode .sp-seg-btn.active') || {}).dataset.mode || 'in';
       var loop = !!(panel.querySelector('#sp-loop') || {}).checked;
+      var amp = parseFloat((panel.querySelector('#sp-amp') || {}).value); if(isNaN(amp)) amp = 50;
       hide();
-      if(onConfirm) onConfirm(type, id, { text:text, dur:dur, color:color, mode:mode, loop:loop });
+      if(onConfirm) onConfirm(type, id, { text:text, dur:dur, color:color, mode:mode, loop:loop, amp:amp });
     } else if(type === 'camera'){
       var start = parseFloat((panel.querySelector('#sp-start') || {}).value) || 0;
       var dur = parseFloat((panel.querySelector('#sp-dur') || {}).value) || 3;
@@ -90,8 +91,9 @@ var SettingsPanel = (function(){
       var dur = parseFloat((panel.querySelector('#sp-dur') || {}).value) || 2;
       var mode = (panel.querySelector('#sp-mode .sp-seg-btn.active') || {}).dataset.mode || 'in';
       var loop = !!(panel.querySelector('#sp-loop') || {}).checked;
+      var amp = parseFloat((panel.querySelector('#sp-amp') || {}).value); if(isNaN(amp)) amp = 50;
       hide();
-      if(onConfirm) onConfirm(type, id, { dur: dur, mode: mode, loop: loop });
+      if(onConfirm) onConfirm(type, id, { dur: dur, mode: mode, loop: loop, amp: amp });
     } else {
       hide();
       if(onConfirm) onConfirm(type, id, {});
@@ -101,7 +103,7 @@ var SettingsPanel = (function(){
   function textForm(data){
     var modeRows = '';
     if(data.id !== 'typewriter'){
-      modeRows = spModeRow() + spLoopRow();
+      modeRows = spModeRow() + spAmpRow() + spLoopRow();
     }
     return [
       '<div class="sp-header" data-type="text" data-id="' + data.id + '">',
@@ -209,6 +211,16 @@ var SettingsPanel = (function(){
         '</label>' +
       '</div>';
   }
+  function spAmpRow(){
+    return '<div class="sp-row">' +
+        '<label>Amplitude</label>' +
+        '<label class="sp-ampwrap">' +
+          '<span class="sp-amp-label">lemah</span>' +
+          '<input type="range" id="sp-amp" min="0" max="100" value="50" step="1">' +
+          '<span class="sp-amp-label">kuat</span>' +
+        '</label>' +
+      '</div>';
+  }
 
   function animateForm(data){
     return [
@@ -218,6 +230,7 @@ var SettingsPanel = (function(){
       '</div>',
       '<div class="sp-info">Animasi diterapkan ke <b>layer yang dipilih</b>, dimulai dari posisi time indicator sekarang.</div>',
       spModeRow(),
+      spAmpRow(),
       '<div class="sp-row">',
         '<label>Duration</label>',
         '<input type="number" id="sp-dur" value="2" min="0.2" step="0.1">',
