@@ -529,7 +529,10 @@ function fb_runLayerAnim(id, mode, L, dur, start, amp){
     var pos = fb_prop(grp, "ADBE Position");
     var op  = fb_prop(grp, "ADBE Opacity");
     var sv = pos.value;
-    if(pos) fb_shakeKeys(pos, sv, ip, dur, ((mode === 'out') ? 16 : 12) * F);
+    var hw = L.containingComp.width;
+    // Amplitude 0..100: 100 = getaran sampai mendekati tepi frame
+    var kAmp = (typeof amp === 'number' && amp > 0) ? amp/100 : 0.5;
+    if(pos) fb_shakeKeys(pos, sv, ip, dur, 0.85*hw*0.5*kAmp, 0.85*hh*0.5*kAmp);
     if(op){
       if(mode === 'in'){ op.setValueAtTime(ip, 0); op.setValueAtTime(ip + dur*0.25, 100); fb_easeBiased(op, 60, 10); }
       else if(mode === 'out'){ op.setValueAtTime(ip, 100); op.setValueAtTime(ip + dur*0.7, 100); op.setValueAtTime(ip + dur, 0); fb_easeBiased(op, 60, 10); }
@@ -628,13 +631,13 @@ function fb_runLayerAnim(id, mode, L, dur, start, amp){
   }
 }
 
-// ─── Keyframe shake halus: envelope sinus + osilasi posisi ───
-function fb_shakeKeys(pos, sv, ip, dur, amp){
+// ─── Keyframe shake halus: envelope sinus + osilasi posisi (ax/ay = jarak puncak) ───
+function fb_shakeKeys(pos, sv, ip, dur, ax, ay){
   var N = 8;
   for(var k=0;k<=N;k++){
     var env = Math.sin(Math.PI*k/N); // 0 → 1 → 0: mulai & berhenti pelan
     var o = (k%2===0) ? 1 : -1;
-    pos.setValueAtTime(ip + dur*k/N, [sv[0] + amp*env*o, sv[1] - amp*0.5*env*o]);
+    pos.setValueAtTime(ip + dur*k/N, [sv[0] + ax*env*o, sv[1] - ay*env*o]);
   }
   fb_easeBiased(pos, 25, 60);
 }
