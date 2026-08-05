@@ -1,0 +1,11 @@
+// Slide Left
+if(!__fb_layers || !__fb_layers.length) throw "No layers";
+var L = __fb_layers[0];
+var ip = L.inPoint;
+var dur = Math.max(L.outPoint - ip, 0.5);
+var grp = L.property("ADBE Transform Group");
+var pos = grp.property("ADBE Position");
+var sv = pos.value;
+pos.setValueAtTime(ip, [L.containingComp.width + 200, sv[1]]);
+pos.setValueAtTime(ip + dur*0.7, sv);
+for(var k=1;k<=pos.numKeys;k++) pos.setTemporalEaseAtKey(k,[new KeyframeEase(0,33.33)],[new KeyframeEase(0,33.33)]);

@@ -1,0 +1,102 @@
+/* ─── Fast Bian — Premium Glass Theme ─── */
+
+/* Geist font (local, for CEP) */
+@font-face{font-family:'Geist';font-weight:300;src:url('../vendor/fonts/Geist-Light.woff2') format('woff2');}
+@font-face{font-family:'Geist';font-weight:400;src:url('../vendor/fonts/Geist-Regular.woff2') format('woff2');}
+@font-face{font-family:'Geist';font-weight:500;src:url('../vendor/fonts/Geist-Medium.woff2') format('woff2');}
+@font-face{font-family:'Geist';font-weight:600;src:url('../vendor/fonts/Geist-SemiBold.woff2') format('woff2');}
+@font-face{font-family:'Geist';font-weight:700;src:url('../vendor/fonts/Geist-Bold.woff2') format('woff2');}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --bg:#15171C;
+  --surface:#1C2027;
+  --glass:rgba(255,255,255,0.05);
+  --glass-hover:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.08);
+  --divider:rgba(255,255,255,0.06);
+  --primary:#3B82F6;
+  --primary-hover:#60A5FA;
+  --primary-2:#2563EB;
+  --text:#F8FAFC;
+  --text2:#94A3B8;
+  --success:#22C55E;
+  --warning:#FACC15;
+  --danger:#EF4444;
+  --radius:14px;
+  --radius-sm:8px;
+  --shadow:0 8px 24px rgba(0,0,0,.35);
+  --font:'Geist','Adobe Clean','SF Pro',-apple-system,sans-serif;
+  --transition:all .18s ease;
+}
+
+html,body{
+  height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font);
+  font-size:14px;
+  line-height:1.5;
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+#app{
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  overflow:hidden;
+}
+
+/* ─── Subtle noise texture overlay ─── */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  pointer-events:none;
+  opacity:.028;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
+}
+
+/* ─── Minimal scrollbar ─── */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.2);}
+
+/* ─── Empty state ─── */
+.empty-state{
+  text-align:center;
+  padding:32px 20px;
+  color:var(--text2);
+  grid-column:1/-1;
+  font-size:13px;
+}
+
+/* ─── Tools action bar (Undo/Redo) ─── */
+.tools-actions{
+  display:flex;
+  gap:6px;
+  padding:8px 12px 0;
+}
+.tools-btn{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 12px;
+  border-radius:9px;
+  font-size:11px;
+  font-weight:600;
+  font-family:var(--font);
+  color:var(--text2);
+  background:var(--glass);
+  border:1px solid var(--border);
+  cursor:pointer;
+  transition:var(--transition);
+}
+.tools-btn:hover{color:var(--text);border-color:var(--primary);background:var(--glass-hover);}
+.tools-btn:active{transform:scale(.96);}

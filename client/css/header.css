@@ -1,0 +1,51 @@
+/* ─── Fast Bian — Header ─── */
+#header{
+  flex-shrink:0;
+  padding:12px 14px 10px;
+  border-bottom:1px solid var(--divider);
+  background:linear-gradient(180deg, rgba(255,255,255,.02), transparent);
+  backdrop-filter:blur(8px);
+}
+
+.header-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  border-radius:9px;
+  background:linear-gradient(135deg, rgba(59,130,246,.28), rgba(37,99,235,.14));
+  box-shadow:0 0 0 1px rgba(59,130,246,.3), 0 2px 6px rgba(0,0,0,.3);
+  flex-shrink:0;
+}
+.logo svg{width:16px;height:16px;}
+
+.title{
+  font-weight:700;
+  font-size:16px;
+  color:var(--text);
+  letter-spacing:-.3px;
+}
+
+.ver{
+  font-size:11px;
+  font-weight:500;
+  color:var(--text2);
+  background:var(--glass);
+  border:1px solid var(--border);
+  padding:1px 8px;
+  border-radius:999px;
+}

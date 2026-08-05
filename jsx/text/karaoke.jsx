@@ -1,0 +1,20 @@
+// Karaoke
+if(!__fb_layers || !__fb_layers.length) throw "No layers";
+var L = __fb_layers[0];
+var ip = L.inPoint;
+var dur = Math.max(L.outPoint - ip, 1);
+var txt = L.property("Source Text").value;
+var len = txt.text.length || 1;
+var an = L.property("ADBE Text Properties").property("ADBE Text Animators").addProperty("ADBE Text Animator");
+an.name = "Karaoke";
+var sel = an.property("ADBE Text Selectors").addProperty("ADBE Text Selector");
+var fill = an.property("ADBE Text Animator Properties").addProperty("ADBE Text Fill Color");
+fill.setValue([1,0.84,0,1]);
+var st = sel.property("ADBE Text Range Start");
+st.setValueAtTime(ip, 0);
+st.setValueAtTime(ip + dur, len);
+var en = sel.property("ADBE Text Range End");
+en.setValueAtTime(ip, 1);
+en.setValueAtTime(ip + dur, len + 1);
+for(var k=1;k<=st.numKeys;k++) st.setTemporalEaseAtKey(k,[new KeyframeEase(0,33.33)],[new KeyframeEase(0,33.33)]);
+for(var k=1;k<=en.numKeys;k++) en.setTemporalEaseAtKey(k,[new KeyframeEase(0,33.33)],[new KeyframeEase(0,33.33)]);

@@ -1,0 +1,61 @@
+/* ─── Fast Bian — Search ─── */
+.search-wrap{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+
+.search-icon{
+  position:absolute;
+  left:11px;
+  top:50%;
+  transform:translateY(-50%);
+  pointer-events:none;
+}
+
+#searchInput{
+  width:100%;
+  padding:9px 34px 9px 34px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--glass);
+  backdrop-filter:blur(8px);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.18);
+  color:var(--text);
+  font-size:13px;
+  font-family:var(--font);
+  outline:none;
+  transition:var(--transition);
+}
+#searchInput::placeholder{color:var(--text2);}
+#searchInput:hover{border-color:rgba(255,255,255,.15);}
+#searchInput:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(59,130,246,.16), inset 0 1px 2px rgba(0,0,0,.18);
+}
+#searchInput:focus+.search-icon{stroke:var(--primary);}
+
+.clear-btn{
+  position:absolute;
+  right:6px;
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:none;
+  color:var(--text2);
+  font-size:15px;
+  cursor:pointer;
+  padding:2px 7px;
+  border-radius:5px;
+  line-height:1;
+}
+.clear-btn:hover{color:var(--text);background:var(--glass-hover);}
+.clear-btn.hidden{display:none;}
+
+/* Search highlight */
+mark{
+  background:rgba(59,130,246,.22);
+  color:var(--primary-hover);
+  border-radius:3px;
+  padding:0 3px;
+}

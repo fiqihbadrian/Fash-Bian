@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fast Bian</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/header.css">
+<link rel="stylesheet" href="css/search.css">
+<link rel="stylesheet" href="css/accordion.css">
+<link rel="stylesheet" href="css/card.css">
+<link rel="stylesheet" href="css/settings.css">
+<link rel="stylesheet" href="css/tab.css">
+<link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+<div id="app">
+  <!-- HEADER -->
+  <header id="header">
+    <div class="header-top">
+      <div class="brand">
+        <span class="logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="title">Fast Bian</span>
+        <span class="ver">1.0</span>
+      </div>
+    </div>
+    <div class="search-wrap">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="searchInput" placeholder="Cari animasi..." autocomplete="off">
+      <button id="searchClear" class="clear-btn hidden">&times;</button>
+    </div>
+  </header>
+
+  <div id="tabBar">
+    <button class="tab active" data-tab="tools">Tools</button>
+    <button class="tab" data-tab="curve">Curve</button>
+    <button class="tab" data-tab="chat">AI Chat</button>
+  </div>
+
+  <div id="tabTools" class="tab-content active">
+    <div class="tools-actions">
+      <button class="tools-btn" id="btnUndo" title="Undo (Ctrl/Cmd+Z)">↩ Undo</button>
+      <button class="tools-btn" id="btnRedo" title="Redo (Ctrl/Cmd+Shift+Z)">↪ Redo</button>
+    </div>
+    <div id="settingsPanel"></div>
+    <div id="accordionContainer"></div>
+  </div>
+
+  <div id="tabCurve" class="tab-content">
+    <div class="curve-header">
+      <div class="curve-title">Curve Editor</div>
+      <div id="curveState" class="curve-state">Seret titik kontrol kurva untuk membuat bentuk curve sendiri, lalu klik Terapkan.</div>
+    </div>
+    <div id="curvePreview" class="curve-preview"></div>
+    <div class="curve-actions">
+      <button id="curveApply" class="curve-btn">Terapkan</button>
+      <button id="curveReset" class="curve-btn secondary">Reset</button>
+    </div>
+    <div id="curveList" class="curve-list"></div>
+  </div>
+
+  <div id="tabChat" class="tab-content">
+    <div id="chatHeader">
+      <div id="chatSessionLabel">AI Chat</div>
+      <div class="chat-session-wrap">
+        <button id="chatSessionMenuBtn" class="chat-session-btn" title="Pilih sesi chat">☰</button>
+        <div id="chatSessionMenu" class="chat-session-menu hidden">
+          <div id="chatSessionList"></div>
+          <button id="chatNewSession" class="chat-session-new">+ Sesi Baru</button>
+        </div>
+      </div>
+    </div>
+    <div id="chatMessages"></div>
+    <div id="chatInputWrap">
+      <textarea id="chatInput" rows="1" placeholder="Tanya apa aja..."></textarea>
+      <button id="chatSend">Kirim</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/animationData.js"></script>
+<script src="js/accordion.js"></script>
+<script src="js/search.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/apiKey.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

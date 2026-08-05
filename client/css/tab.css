@@ -1,0 +1,62 @@
+/* ─── Fast Bian — Tab Bar ─── */
+#tabBar{
+  display:flex;
+  border-bottom:1px solid var(--divider);
+  background:var(--bg);
+  padding:0 12px;
+  flex-shrink:0;
+  gap:4px;
+}
+
+.tab{
+  position:relative;
+  flex:1;
+  padding:10px 12px;
+  border:none;
+  background:transparent;
+  color:var(--text2);
+  font-family:var(--font);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.3px;
+  cursor:pointer;
+  transition:var(--transition);
+}
+.tab::after{
+  content:'';
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:-1px;
+  height:2px;
+  border-radius:2px;
+  background:var(--primary);
+  opacity:0;
+  transform:scaleX(.5);
+  transition:var(--transition);
+}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--text);}
+.tab.active::after{opacity:1;transform:scaleX(1);}
+
+.tab-content{display:none;flex:1;min-height:0;overflow:hidden;position:relative;}
+.tab-content.active{display:flex;flex-direction:column;}
+#tabTools.active{flex-direction:column;overflow:auto;}
+#tabCurve.active{flex-direction:column;overflow:hidden;}
+#tabChat.active{flex-direction:column;overflow:hidden;}
+
+#tabCurve{padding:10px 12px;gap:10px;}
+.curve-header{display:flex;flex-direction:column;gap:4px;}
+.curve-title{font-weight:700;color:var(--text);font-size:13px;}
+.curve-state{font-size:11px;color:var(--text2);line-height:1.4;}
+.curve-preview{display:flex;align-items:center;justify-content:center;padding:8px;border:1px solid var(--divider);border-radius:12px;background:var(--panel2);min-height:160px;color:var(--primary);}
+.curve-preview canvas{width:100%;height:100%;max-width:320px;border-radius:10px;cursor:crosshair;}
+.curve-actions{display:flex;gap:8px;}
+.curve-btn{flex:1;padding:8px 10px;border:none;border-radius:10px;background:var(--primary);color:white;font-weight:700;cursor:pointer;}
+.curve-btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--divider);}
+.curve-list{display:flex;flex-direction:column;gap:8px;overflow:auto;padding-right:2px;}
+.curve-card{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px;border:1px solid var(--divider);border-radius:10px;background:var(--panel2);color:var(--text);text-align:left;cursor:pointer;}
+.curve-card.active{border-color:var(--primary);background:rgba(59,130,246,.08);}
+.curve-name{font-size:12px;font-weight:700;}
+.curve-desc{font-size:11px;color:var(--text2);line-height:1.35;}
+.curve-empty{padding:12px;border:1px dashed var(--divider);border-radius:10px;color:var(--text2);font-size:12px;}
