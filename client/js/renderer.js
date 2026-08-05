@@ -116,14 +116,18 @@ var Renderer = (function(){
     }
     try {
       evalFn(script, function(res){
-        if(res && res.indexOf('ERR') === 0) {
-          alert(res);
-        } else {
+        res = (res == null) ? '' : String(res);
+        if(res.indexOf('OK') === 0){
+          fbToast('✅ ' + res.slice(9));
           if(lastCard) {
             document.querySelectorAll('.card.used').forEach(function(c){c.classList.remove('used');});
             lastCard.classList.add('used');
           }
           console.log('OK: ' + id);
+        } else {
+          // Bukan OK → tampilkan error (termasuk 'ERR:' ATAU exception mentah dari AE)
+          alert('Fast Bian: ' + (res || 'Gagal tanpa pesan error. Cek apakah komposisi & layer aktif sudah benar.'));
+          console.log('FastBian error:', res);
         }
       });
     } catch(e){
@@ -156,5 +160,15 @@ var Renderer = (function(){
     var evalFn = getEval();
     if(!evalFn){ console.log('FastBian: no bridge (simulasi): ' + script); return; }
     try { evalFn(script, function(){}); } catch(e){ alert('FastBian error: ' + e.message); }
+  }
+
+  // Toast feedback kecil di panel
+  function fbToast(msg){
+    var t = document.createElement('div');
+    t.className = 'fb-toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function(){ t.classList.add('show'); }, 10);
+    setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300); }, 3200);
   }
 })();

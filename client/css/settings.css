@@ -314,3 +314,25 @@
   box-shadow:0 3px 12px rgba(59,130,246,.45), inset 0 1px 0 rgba(255,255,255,.3);
 }
 #settingsPanel .sp-btn-confirm:active{transform:scale(.97);}
+
+/* Toast feedback panel */
+.fb-toast{
+  position:fixed;
+  left:50%;
+  bottom:14px;
+  transform:translate(-50%,20px);
+  background:rgba(20,24,36,.92);
+  color:#fff;
+  font-size:12px;
+  padding:8px 14px;
+  border-radius:10px;
+  box-shadow:0 4px 16px rgba(0,0,0,.5);
+  border:1px solid rgba(255,255,255,.12);
+  opacity:0;
+  transition:opacity .25s ease, transform .25s ease;
+  z-index:9999;
+  max-width:80vw;
+  pointer-events:none;
+  text-align:center;
+}
+.fb-toast.show{ opacity:1; transform:translate(-50%,0); }
