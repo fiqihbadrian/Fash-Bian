@@ -899,19 +899,18 @@ function fb_runAnimationCode(id, L, dur, opts){
     }
     // ─── Typewriter ───
     case 'typewriter':{
-      var txt = L.property("Source Text").value;
-      var ot = txt.text;
-      var esc = ot.replace(/\\/g,"\\\\\\\\").replace(/"/g,'\\"').replace(/\n/g,"\\n");
+      var src = L.property("ADBE Text Properties").property("ADBE Text Document");
+      var ot = src.value.text;
+      var esc = ot.replace(/\\/g,"\\\\").replace(/"/g,'\\"').replace(/\n/g,"\\n");
       var fx = L.property("ADBE Effect Parade").addProperty("ADBE Slider Control");
       fx.name = "Typewriter";
       var sl = fx.property("Slider");
       sl.setValueAtTime(ip, 0);
       sl.setValueAtTime(ip + dur, ot.length);
       for(var kk=1;kk<=sl.numKeys;kk++) sl.setInterpolationTypeAtKey(kk,KeyframeInterpolationType.LINEAR,KeyframeInterpolationType.LINEAR);
-      L.property("Source Text").expression = 'var t=effect("Typewriter")("Slider").value;if(t<1)t=1;if(t>' + ot.length + ')t=' + ot.length + ';var s="'+esc+'";s.substr(0,Math.floor(t));';
+      src.expression = 'var t=effect("Typewriter")("Slider").value;if(t<1)t=1;if(t>' + ot.length + ')t=' + ot.length + ';var s="'+esc+'";s.substr(0,Math.floor(t));';
       break;
     }
-    // ─── Word by Word ───
     case 'word-by-word':{
       var txt = L.property("Source Text").value;
       var ot = txt.text;
