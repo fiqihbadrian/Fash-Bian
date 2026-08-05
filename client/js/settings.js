@@ -196,8 +196,8 @@ var SettingsPanel = (function(){
         '<label>Mode</label>' +
         '<div class="sp-seg" id="sp-mode">' +
           '<button type="button" class="sp-seg-btn active" data-mode="in">Masuk</button>' +
-          '<button type="button" class="sp-seg-btn" data-mode="out">Keluar</button>' +
           '<button type="button" class="sp-seg-btn" data-mode="center">Tengah</button>' +
+          '<button type="button" class="sp-seg-btn" data-mode="out">Keluar</button>' +
         '</div>' +
       '</div>';
   }
