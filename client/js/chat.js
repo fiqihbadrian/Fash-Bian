@@ -11,7 +11,7 @@ var Chat = (function(){
   var fixTries = 0; // berapa kali perbaikan otomatis dalam satu pesan
   var STORAGE_KEY = 'fastbian_chat_history';
   var VER_KEY = 'fastbian_chat_ver';
-  var CHAT_VER = '8'; // bump when system prompt changes
+  var CHAT_VER = '9'; // bump when system prompt changes
   var SYSTEM = [
     'Kamu adalah asisten AI di dalam panel "Fast Bian" untuk After Effects.',
     'Kamu membantu user bikin animasi, text, dan efek langsung di timeline AE.',
@@ -25,7 +25,7 @@ var Chat = (function(){
     '',
     'FUNGSI BAWAAN PANEL (PAKAI INI — JAUH LEBIH AMAN DARIPADA NULIS EXTENDSCRIPT MANUAL):',
     '- FastBian_ApplyRotationLoop()  → keyframe Rotation 0→360° (2 detik) + loopOut("cycle") di semua layer terpilih. Mengembalikan string OK/ERR.',
-    '- FastBian_RunLayerAnimation("bounce"|"pop"|"fade"|"slide"|"swing", "", \'{"dur":2,"mode":"in","loop":false}\') → animasi ke layer yang DIPILIH (mode: in = masuk, out = keluar, center = gerak terus). Mengembalikan string OK/ERR.',
+    '- FastBian_RunLayerAnimation("bounce"|"pop"|"fade"|"slide"|"swing"|"shake", "", \'{"dur":2,"mode":"in","loop":false}\') → animasi ke layer yang DIPILIH (mode: in = masuk, out = keluar, center = gerak terus). Mengembalikan string OK/ERR.',
     '- Panggil fungsi bawaan sebagai EKSPRESI TERAKHIR di kode (contoh: FastBian_ApplyRotationLoop();) supaya hasilnya OK/ERR tampil di panel.',
     '- JANGAN bungkus panggilan fungsi bawaan dalam try/catch + alert(); langsung panggil saja. Jangan pakai alert() untuk laporan hasil — biarkan fungsi bawaan melapor lewat return.',
     '- JANGAN pakai alert()/confirm()/prompt() di kode (dibungkam otomatis oleh panel) dan JANGAN bungkus kode dalam try/catch — panel sudah menangkap error otomatis dan akan memperbaikinya.',
@@ -504,7 +504,7 @@ var Chat = (function(){
       if(!info || !info.comp) return cb('');
       var lines = ['[TOOLS PANEL FAST BIAN — PAKAI INI, JANGAN TULIS EXTENDSCRIPT MANUAL]'];
       lines.push('- FastBian_ApplyRotationLoop();  → rotasi looping 0→360° (2 detik) + loopOut("cycle") ke semua layer terpilih.');
-      lines.push('- FastBian_RunLayerAnimation("bounce|pop|fade|slide|swing", "", \'{"dur":2,"mode":"in","loop":false}\');  → animasi ke layer terpilih (mode: in = masuk, out = keluar, center = gerak terus).');
+      lines.push('- FastBian_RunLayerAnimation("bounce|pop|fade|slide|swing|shake", "", \'{"dur":2,"mode":"in","loop":false}\');  → animasi ke layer terpilih (mode: in = masuk, out = keluar, center = gerak terus).');
       lines.push('- Panggil fungsi bawaan sebagai ekspresi terakhir, jangan bungkus try/catch/alert.');
       lines.push('');
       lines.push('[INFO AE] Komposisi: "' + info.comp + '" (durasi ' + info.duration.toFixed(1) + 's, playhead ' + info.time.toFixed(1) + 's)');

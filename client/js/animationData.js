@@ -6,6 +6,7 @@ var TEXT_ANIMATIONS = [
   {id:'pop',       name:'Pop',       desc:'Skala membesar — masuk, keluar, atau berdenyut.',  icon:'circle'},
   {id:'bounce',    name:'Bounce',    desc:'Memantul — masuk, keluar, atau gerak di tengah.', icon:'arrow-up-down'},
   {id:'swing',     name:'Swing',     desc:'Rotasi goyang — masuk, keluar, atau di tengah.',  icon:'repeat'},
+  {id:'shake',     name:'Shake',     desc:'Getaran halus — masuk, keluar, atau di tengah.',    icon:'activity'},
   {id:'typewriter',name:'Typewriter',desc:'Efek ketik karakter demi karakter.',              icon:'keyboard'}
 ];
 
@@ -30,7 +31,8 @@ var ANIMATE_ANIMATIONS = [
   {id:'pop',    name:'Pop',    desc:'Skala membesar — masuk, keluar, atau berdenyut.',   icon:'circle'},
   {id:'fade',   name:'Fade',   desc:'Transparansi — muncul, hilang, atau berdenyut.',     icon:'eye'},
   {id:'slide',  name:'Slide',  desc:'Geser — masuk, keluar, atau naik-turun di tengah.',  icon:'move-up'},
-  {id:'swing',  name:'Swing',  desc:'Rotasi goyang — masuk, keluar, atau di tengah.',     icon:'repeat'}
+  {id:'swing',  name:'Swing',  desc:'Rotasi goyang — masuk, keluar, atau di tengah.',     icon:'repeat'},
+  {id:'shake',  name:'Shake',   desc:'Getaran halus — masuk, keluar, atau bergetar di tengah.', icon:'activity'}
 ];
 
 // ─── Shape Data ───
@@ -122,6 +124,7 @@ var GRAPH_ICONS = {
 // ─── Lucide Icons (stroke, 2px, rounded) ───
 var LUCIDE_ICONS = {
   'eye': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /> <circle cx="12" cy="12" r="3" /></svg>',
+  'activity': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" /></svg>',
   'eye-off': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" /> <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" /> <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" /> <path d="m2 2 20 20" /></svg>',
   'arrow-up': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7" /> <path d="M12 19V5" /></svg>',
   'arrow-down': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14" /> <path d="m19 12-7 7-7-7" /></svg>',

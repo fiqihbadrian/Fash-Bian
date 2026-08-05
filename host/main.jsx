@@ -521,6 +521,19 @@ function fb_runLayerAnim(id, mode, L, dur, start){
   var hh = L.containingComp.height;
   var ip = start;
 
+  // Shake — digarap manual (envelope sinus = mulai/berhenti halus, tanpa sentakan)
+  if(id === 'shake'){
+    var pos = fb_prop(grp, "ADBE Position");
+    var op  = fb_prop(grp, "ADBE Opacity");
+    var sv = pos.value;
+    if(pos) fb_shakeKeys(pos, sv, ip, dur, (mode === 'out') ? 16 : 12);
+    if(op){
+      if(mode === 'in'){ op.setValueAtTime(ip, 0); op.setValueAtTime(ip + dur*0.25, 100); fb_easeBiased(op, 60, 10); }
+      else if(mode === 'out'){ op.setValueAtTime(ip, 100); op.setValueAtTime(ip + dur*0.7, 100); op.setValueAtTime(ip + dur, 0); fb_easeBiased(op, 60, 10); }
+    }
+    return;
+  }
+
   // Mode Masuk — pakai preset reveal yang sudah ada
   if(mode === 'in'){
     var inMap = { bounce:'bounce-in', pop:'pop-in', fade:'fade-in', slide:'slide-up', swing:'bounce-rotate' };
@@ -610,6 +623,17 @@ function fb_runLayerAnim(id, mode, L, dur, start){
       break;
     }
   }
+}
+
+// ─── Keyframe shake halus: envelope sinus + osilasi posisi ───
+function fb_shakeKeys(pos, sv, ip, dur, amp){
+  var N = 8;
+  for(var k=0;k<=N;k++){
+    var env = Math.sin(Math.PI*k/N); // 0 → 1 → 0: mulai & berhenti pelan
+    var o = (k%2===0) ? 1 : -1;
+    pos.setValueAtTime(ip + dur*k/N, [sv[0] + amp*env*o, sv[1] - amp*0.5*env*o]);
+  }
+  fb_easeBiased(pos, 25, 60);
 }
 
 // ─── Pasang expression loop pingpong ke semua properti transform ber-keyframe ───
