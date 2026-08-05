@@ -27,8 +27,19 @@ function fb_addPropByName(parent, names, idx){
   return null;
 }
 
+// ─── Debug: tulis baris ke ~/Library/Logs/CSXS/fastbian-debug.log ───
+function FastBian_Log(msg){
+  try{
+    var f = new File(Folder.home.fsName + '/Library/Logs/CSXS/fastbian-debug.log');
+    f.open('a');
+    f.writeln(new Date().toISOString() + ' | ' + msg);
+    f.close();
+  }catch(e){}
+}
+
 // ─── Run Text Animation preset (bikin layer teks baru) ───
 function FastBian_RunAnimation(id, extPath, paramsJson){
+  FastBian_Log('FastBian_RunAnimation masuk: id=' + id + ' params=' + paramsJson);
   app.beginUndoGroup('FastBian: ' + fb_label(id));
   try {
     if(!app.project) return 'ERR: No project opened.';
@@ -61,13 +72,17 @@ function FastBian_RunAnimation(id, extPath, paramsJson){
     } catch(e) {}
 
     if(id === 'typewriter'){
+      FastBian_Log('typewriter: mulai fb_runAnimationCode dur=' + dur);
       fb_runAnimationCode('typewriter', L, dur, { start: start });
+      FastBian_Log('typewriter: selesai tanpa error');
     } else {
       fb_runLayerAnim(id, mode, L, dur, start, amp);
       if(loop) fb_applyLoopToKeys(L);
     }
+    FastBian_Log('OK: ' + id + ' applied (' + dur + 's)');
     return 'OK: ' + fb_label(id) + ' applied (' + dur + 's)';
   } catch(e){
+    FastBian_Log('ERROR di FastBian_RunAnimation: ' + e.toString());
     return 'ERR: ' + e.toString();
   } finally {
     app.endUndoGroup();
@@ -900,7 +915,9 @@ function fb_runAnimationCode(id, L, dur, opts){
     // ─── Typewriter ───
     case 'typewriter':{
       var src = L.property("ADBE Text Properties").property("ADBE Text Document");
+      FastBian_Log('tw: src null? ' + (src == null));
       var ot = src.value.text;
+      FastBian_Log('tw: text=' + ot + ' len=' + ot.length);
       var esc = ot.replace(/\\/g,"\\\\").replace(/"/g,'\\"').replace(/\n/g,"\\n");
       var fx = L.property("ADBE Effect Parade").addProperty("ADBE Slider Control");
       fx.name = "Typewriter";
@@ -908,7 +925,9 @@ function fb_runAnimationCode(id, L, dur, opts){
       sl.setValueAtTime(ip, 0);
       sl.setValueAtTime(ip + dur, ot.length);
       for(var kk=1;kk<=sl.numKeys;kk++) sl.setInterpolationTypeAtKey(kk,KeyframeInterpolationType.LINEAR,KeyframeInterpolationType.LINEAR);
+      FastBian_Log('tw: keys=' + sl.numKeys);
       src.expression = 'var t=effect("Typewriter")("Slider").value;if(t<1)t=1;if(t>' + ot.length + ')t=' + ot.length + ';var s="'+esc+'";s.substr(0,Math.floor(t));';
+      FastBian_Log('tw: expression dipasang, err? ' + src.expressionError);
       break;
     }
     case 'word-by-word':{
