@@ -1,11 +1,13 @@
 #!/bin/bash
-# Fast Bian — sync Desktop folder ke CEP extension folder
-SRC="$HOME/Desktop/Fast_Bian"
+# Fast Bian — sync repo (di mana pun) ke CEP extension folder
+SRC="$(cd "$(dirname "$0")" && pwd)"
 DST="$HOME/Library/Application Support/Adobe/CEP/extensions/Fast_Bian"
 
 # Exclude file yang gak perlu
 rsync -av --delete \
   --exclude '.DS_Store' \
+  --exclude '.git' \
+  --exclude '.gitignore' \
   --exclude 'sync.sh' \
   "$SRC/" "$DST/"
 
