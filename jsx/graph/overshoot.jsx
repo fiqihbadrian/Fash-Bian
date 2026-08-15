@@ -9,6 +9,7 @@ for(var i=0;i<__fb_layers.length;i++){
       var lv = p.keyValue(lk);
       if(typeof lv === "number"){
         p.setValueAtTime(lt+0.15, lv*1.25);
+
         p.setValueAtTime(lt+0.45, lv);
       } else if(lv instanceof Array){
         var a1 = lv.slice(); var a2 = lv.slice();
