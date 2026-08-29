@@ -4,23 +4,6 @@ Fast Bian adalah panel extension untuk Adobe After Effects yang menyediakan kole
 
 Folder instalasi di macOS menggunakan nama `Fast_Bian` sesuai dengan konvensi CEP Adobe.
 
-## Daftar Isi
-
-- [Gambaran Umum](#gambaran-umum)
-- [Fitur](#fitur)
-- [Persyaratan Sistem](#persyaratan-sistem)
-- [Instalasi](#instalasi)
-  - [1. Mengaktifkan Mode Debug untuk Ekstensi Belum Ditandatangani](#1-mengaktifkan-mode-debug-untuk-ekstensi-belum-ditandatangani)
-  - [2. Menyalin Folder Ekstensi](#2-menyalin-folder-ekstensi)
-  - [3. Membuka Panel di After Effects](#3-membuka-panel-di-after-effects)
-- [Penggunaan](#penggunaan)
-- [Pengembangan](#pengembangan)
-  - [Struktur Direktori](#struktur-direktori)
-  - [Konfigurasi API Key untuk AI Chat](#konfigurasi-api-key-untuk-ai-chat)
-  - [Alur Kerja Pengembangan](#alur-kerja-pengembangan)
-- [Pemecahan Masalah](#pemecahan-masalah)
-- [Catatan dan Keterbatasan](#catatan-dan-keterbatasan)
-
 ## Gambaran Umum
 
 Fast Bian berjalan sebagai panel CEP (Common Extensibility Platform) di dalam After Effects. Antarmuka pengguna dibangun dengan HTML, CSS, dan JavaScript, sedangkan seluruh logika yang berinteraksi dengan After Effects dieksekusi melalui ExtendScript yang berada di sisi host. Komunikasi antara kedua sisi tersebut dilakukan melalui API `CSInterface.evalScript()`.
